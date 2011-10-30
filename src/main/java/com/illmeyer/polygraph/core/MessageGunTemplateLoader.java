@@ -15,7 +15,7 @@ import freemarker.cache.URLTemplateLoader;
 public class MessageGunTemplateLoader extends URLTemplateLoader {
 
 	private static Pattern pathValidator = Pattern
-			.compile("^/(?:(sys)|(?:(mt|tpl|ext)/([^/]+)))/(.+)$");
+			.compile("^(?:(sys)|(?:(mt|tpl|ext)/([^/]+)))/(.+)$");
 
 	File basedir;
 
@@ -29,7 +29,7 @@ public class MessageGunTemplateLoader extends URLTemplateLoader {
 		if (!m.matches())
 			return null;
 
-		boolean isSystem = (m.group(1) == null);
+		boolean isSystem = (m.group(1) != null);
 		String folder = m.group(2);
 		String archive = m.group(3);
 		String filename = m.group(4);
@@ -38,9 +38,9 @@ public class MessageGunTemplateLoader extends URLTemplateLoader {
 
 		try {
 			if (isSystem) {
-				jarURL = basedir.toURI().toURL().toString() + "/sys.jar!/vfs/" + filename;
+				jarURL = basedir.toURI().toURL().toString() + "sys.jar!/vfs/" + filename;
 			} else {
-				jarURL = basedir.toURI().toURL().toString() + "/" +folder +"/"+ archive	+ ".jar!/vfs/" + filename;
+				jarURL = basedir.toURI().toURL().toString() + "" +folder +"/"+ archive	+ ".jar!/vfs/" + filename;
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

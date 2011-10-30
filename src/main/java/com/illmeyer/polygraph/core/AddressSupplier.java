@@ -1,7 +1,8 @@
 package com.illmeyer.polygraph.core;
 
-public interface AddressSupplier {
+import java.util.Enumeration;
+import java.util.Iterator;
+
+public interface AddressSupplier extends Enumeration<Address> {
 	public void initialize();
-	public boolean hasNextAddress();
-	public Address getNextAddress();
 }

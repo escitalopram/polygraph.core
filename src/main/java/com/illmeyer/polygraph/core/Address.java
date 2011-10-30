@@ -10,7 +10,7 @@ import lombok.Setter;
 @Data
 public class Address {
 	@Setter(AccessLevel.PRIVATE)
-	private Map<String,Object> endpoints = new HashMap<String, Object>();
+	private Map<String,Object> addrs = new HashMap<String, Object>();
 	@Setter(AccessLevel.PRIVATE)
-	private Map<String,Object> dataFields = new HashMap<String, Object>();
+	private Map<String,Object> fields = new HashMap<String, Object>();
 }
