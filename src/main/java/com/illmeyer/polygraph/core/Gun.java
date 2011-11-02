@@ -13,35 +13,61 @@ import freemarker.cache.TemplateLoader;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.apachecommons.CommonsLog;
 
-@Data @AllArgsConstructor @NoArgsConstructor
+/**
+ * This is the central Class to polygraph. It pieces everything together and starts the main message generation loop.
+ * @author escitalopram
+ *
+ */
+@Data @AllArgsConstructor @NoArgsConstructor // @CommonsLog
 public class Gun {
+	private static final org.apache.commons.logging.Log log = org.apache.commons.logging.LogFactory.getLog(Gun.class);
+
 	private AddressSupplier addressSupplier;
 	private MessageDispatcher dispatcher;
 	private String initialTemplate;
 	private Object templateData;
-	private File baseDir;
 	private TemplateLoader loader;
+	private Map<String,Object> context = new HashMap<String,Object>();
+	
+	public void configure(GunConfigurator configurator) {
+		configurator.registerModules(this);
+		loader=configurator.getTemplateLoader();
+	}
+	
+	/**
+	 * Triggers the message Generation process.
+	 * @throws IOException
+	 */
 	
 	public void trigger() throws IOException {
 		addressSupplier.initialize();
 		dispatcher.initialize();
 		Configuration conf = getConfiguration();
 		Template tpl = conf.getTemplate(initialTemplate);
-		Map<String,Object> root = getContext();
+		context.put("tpl", templateData);
 		while (addressSupplier.hasMoreElements()) {
+			Address a=null;
 			try {
-				root.put("addr",addressSupplier.nextElement());
+				a=addressSupplier.nextElement();
+				context.put("addr",a);
 				StringWriter output = new StringWriter(4096);
-				tpl.process(root, output);
+				tpl.process(context, output);
 				output.close();
 				dispatcher.dispatchMessage(output.toString());
 			} catch (TemplateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error("Error processing address " + a.getAddrs().toString());
+				
+			} catch (Exception e) {
+				log.error("Error processing address " + a.getAddrs().toString());
 			}
 		}
 	}
+	/**
+	 * Generate default Freemarker Configuration object
+	 * @return Freemarker Configuration Object
+	 */
 	protected Configuration getConfiguration() {
 		Configuration result = new Configuration();
 		
@@ -49,9 +75,4 @@ public class Gun {
 		return result;
 	}
 	
-	protected Map<String,Object> getContext() {
-		Map<String,Object> result = new HashMap<String, Object>();
-		result.put("tpl", templateData);
-		return result;
-	}
 }

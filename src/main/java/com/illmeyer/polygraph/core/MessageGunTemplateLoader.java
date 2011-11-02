@@ -7,10 +7,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-
 import freemarker.cache.URLTemplateLoader;
 
+/**
+ * Implements the template loading mechanism using the polygraph directory structure
+ * @author escitalopram
+ *
+ */
 @NoArgsConstructor
 public class MessageGunTemplateLoader extends URLTemplateLoader {
 

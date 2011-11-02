@@ -2,21 +2,20 @@ package com.illmeyer.polygraph.core;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.HashMap;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 import freemarker.cache.TemplateLoader;
 import static org.mockito.Mockito.stub;
-
-import static org.mockito.Mockito.verify;
-
 import static org.mockito.Mockito.mock;
+
 public class TestCore {
 	@Test
 	public void executeGunTest() throws IOException {
 		
-		Gun g = new Gun(getMockedAddressSupplier(),getMockedMessageDispatcher(),"/tpl/test/main",null,null,getMockedTemplateLoader());
+		Gun g = new Gun(getMockedAddressSupplier(),getMockedMessageDispatcher(),"/tpl/test/main",null,getMockedTemplateLoader(), new HashMap<String,Object>());
 
 		g.trigger();
 	}
@@ -41,12 +40,13 @@ public class TestCore {
 	
 	public MessageDispatcher getMockedMessageDispatcher() {
 		MessageDispatcher md= new MessageDispatcher() {
-			
+			private boolean initialized=false;
 			public void initialize() {
+				initialized=true;
 			}
 			
 			public void dispatchMessage(String message) {
-				System.out.println("Received Message: "+message);
+				Assert.assertTrue(initialized);
 				Assert.assertEquals("Hallo Wolfgang!",message);
 			}
 		};
