@@ -1,6 +1,4 @@
 package com.illmeyer.polygraph.core;
 
-import java.util.List;
-
-public interface Extension extends Module {
+public interface Extension extends Module, ExtensionDependent {
 }

@@ -1,9 +1,6 @@
 package com.illmeyer.polygraph.core;
 
-import java.util.List;
-
-public interface Template extends Module {
+public interface Template extends Module, ExtensionDependent {
 	String getMainTemplatePath();
 	String getMessageType();
-	List<String> getRequiredExtensions();
 }

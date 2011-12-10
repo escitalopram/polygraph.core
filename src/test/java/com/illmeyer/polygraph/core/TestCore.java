@@ -15,8 +15,7 @@ public class TestCore {
 	@Test
 	public void executeGunTest() throws IOException {
 		
-		Gun g = new Gun(getMockedAddressSupplier(),getMockedMessageDispatcher(),"/tpl/test/main",null,getMockedTemplateLoader(), new HashMap<String,Object>());
-
+		Gun g = new Gun(getMockedAddressSupplier(),getMockedMessageDispatcher(),"tpl/test/main",null,null,getMockedTemplateLoader(),new HashMap<String, Object>());
 		g.trigger();
 	}
 	
