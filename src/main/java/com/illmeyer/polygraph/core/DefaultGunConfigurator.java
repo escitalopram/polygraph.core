@@ -1,6 +1,5 @@
 package com.illmeyer.polygraph.core;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,15 +58,15 @@ public class DefaultGunConfigurator implements GunConfigurator {
 				}
 			}
 		}
-		checkDependencies(modules);
-		// templateLoader = new MessageGunTemplateLoader(basedir);
+		modules=checkDependencies(modules);
+		templateLoader = new MessageGunTemplateLoader(modules);
 	}
 
 	/**
 	 * check if all module dependencies are met and everything is there for a successful operation of the gun, initializes the modules
 	 * @param modules list of valid modules
 	 */
-	private void checkDependencies(Map<String,Module> modules) {
+	private Map<String,Module> checkDependencies(Map<String,Module> modules) {
 		Map<String,Module> work = new HashMap<String, Module>(modules);
 		DependencyResolver r = new DependencyResolver(new ArrayList<Module>(work.values()));
 		r.checkDependencies();
@@ -81,6 +80,7 @@ public class DefaultGunConfigurator implements GunConfigurator {
 		}
 		if (templates.isEmpty()) log.error("No usable templates found");
 		if (messageTypes.isEmpty()) log.error("No usable message types found");
+		return work;
 	}
 
 

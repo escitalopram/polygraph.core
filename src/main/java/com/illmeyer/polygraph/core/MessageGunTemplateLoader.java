@@ -3,6 +3,7 @@ package com.illmeyer.polygraph.core;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,44 +17,50 @@ import freemarker.cache.URLTemplateLoader;
  */
 @NoArgsConstructor
 public class MessageGunTemplateLoader extends URLTemplateLoader {
+	
+	enum ModuleType {
+		mt,
+		tpl,
+		ext
+	}
 
 	private static Pattern pathValidator = Pattern
-			.compile("^(?:(sys)|(?:(mt|tpl|ext)/([^/]+)))/(.+)$");
+			.compile("^(?:(sys)|(?:(mt|tpl|ext)/([^/]+)))(/.+)$");
 
-	File basedir;
+	Map<String, Module> modules;
 
-	public MessageGunTemplateLoader(File basedir) {
-		this.basedir = basedir;
+	public MessageGunTemplateLoader(Map<String, Module> modules) {
+		this.modules = modules;
 	}
 
 	@Override
 	protected URL getURL(String name) {
+		
 		Matcher m = pathValidator.matcher(name);
 		if (!m.matches())
 			return null;
 
 		boolean isSystem = (m.group(1) != null);
-		String folder = m.group(2);
-		String archive = m.group(3);
-		String filename = m.group(4);
-
-		String jarURL = null;
-
-		try {
-			if (isSystem) {
-				jarURL = basedir.toURI().toURL().toString() + "sys.jar!/vfs/" + filename;
-			} else {
-				jarURL = basedir.toURI().toURL().toString() + "" +folder +"/"+ archive	+ ".jar!/vfs/" + filename;
-			}
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-			return null;
+		ModuleType moduletype = ModuleType.valueOf(m.group(2));
+		String modulename = m.group(3);
+		String file = m.group(4);
+		
+		if (isSystem) {
+			modulename="com.illmeyer.polygraph.syslib.Syslib";
+		} else {
+			Module mod = modules.get(modulename);
+			if(moduletype==ModuleType.ext && !(mod instanceof Extension)) return null;
+			if(moduletype==ModuleType.mt && !(mod instanceof MessageType)) return null;
+			if(moduletype==ModuleType.tpl && !(mod instanceof Template)) return null;
 		}
+		
+		Module mod=modules.get(modulename);
+		URL base = mod.getClass().getProtectionDomain().getCodeSource().getLocation();
+		URL result=null;
 		try {
-			return new URL(jarURL);
+			result = new URL("jar:"+base+"!"+file);
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
-			return null;
 		}
+		return result;
 	}
 }
