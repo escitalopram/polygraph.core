@@ -5,6 +5,9 @@
 	<artifactId>polygraph.core</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Polygraph Core</name>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.freemarker</groupId>
