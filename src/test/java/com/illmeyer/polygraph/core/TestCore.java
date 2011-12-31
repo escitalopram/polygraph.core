@@ -15,8 +15,15 @@ public class TestCore {
 	@Test
 	public void executeGunTest() throws IOException {
 		
-		Gun g = new Gun(getMockedAddressSupplier(),getMockedMessageDispatcher(),"tpl/test/main",null,null,getMockedTemplateLoader(),new HashMap<String, Object>());
+		Gun g = new Gun();
+		g.setAddressSupplier(getMockedAddressSupplier());
+		g.setDispatcher(getMockedMessageDispatcher());
+		g.setInitialTemplate("tpl/test/main");
+		g.setLoader(getMockedTemplateLoader());
+		g.setTemplateData(null);
+		g.initialize();
 		g.trigger();
+		g.destroy();
 	}
 	
 	public AddressSupplier getMockedAddressSupplier() {
@@ -47,6 +54,12 @@ public class TestCore {
 			public void dispatchMessage(String message) {
 				Assert.assertTrue(initialized);
 				Assert.assertEquals("Hallo Wolfgang!",message);
+			}
+
+			@Override
+			public void destroy() {
+				// TODO Auto-generated method stub
+				
 			}
 		};
 		return md;

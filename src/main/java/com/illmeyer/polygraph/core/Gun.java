@@ -9,17 +9,22 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.cache.TemplateLoader;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * This is the central Class to polygraph. It pieces everything together and starts the main message generation loop.
  * @author escitalopram
  *
  */
-@Data @AllArgsConstructor @NoArgsConstructor // @CommonsLog
-public class Gun {
+@Data
+
+@NoArgsConstructor // @CommonsLog
+public class Gun implements ComponentLifeCycle {
 	private static final org.apache.commons.logging.Log log = org.apache.commons.logging.LogFactory.getLog(Gun.class);
 
 	private AddressSupplier addressSupplier;
@@ -28,11 +33,11 @@ public class Gun {
 	private MessageType mt;
 	private Object templateData;
 	private TemplateLoader loader;
+	private GunConfigurator configurator;
+	@Setter(AccessLevel.PRIVATE)
 	private Map<String,Object> context = new HashMap<String,Object>();
 	
 	public void configure(GunConfigurator configurator) {
-		configurator.registerModules(this);
-		loader=configurator.getTemplateLoader();
 	}
 	
 	/**
@@ -41,8 +46,7 @@ public class Gun {
 	 */
 	
 	public void trigger() throws IOException {
-		addressSupplier.initialize();
-		dispatcher.initialize();
+		addressSupplier.reset();
 		Configuration conf = getConfiguration();
 		Template tpl = conf.getTemplate(initialTemplate);
 		context.put("tpl", templateData);
@@ -74,6 +78,23 @@ public class Gun {
 		
 		result.setTemplateLoader(loader);
 		return result;
+	}
+
+	@Override
+	public void initialize() {
+		if (configurator!=null) {
+			configurator.registerModules(this);
+			loader=configurator.getTemplateLoader();
+		}
+		addressSupplier.initialize();
+		dispatcher.initialize();
+	}
+
+	@Override
+	public void destroy() {
+		if (configurator!=null) configurator.destroy();
+		addressSupplier.destroy();
+		dispatcher.destroy();
 	}
 	
 }

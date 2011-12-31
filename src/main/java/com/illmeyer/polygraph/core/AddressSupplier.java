@@ -7,6 +7,7 @@ import java.util.Enumeration;
  * @author escitalopram
  *
  */
-public interface AddressSupplier extends Enumeration<Address> {
-	public void initialize();
+public interface AddressSupplier extends Enumeration<Address>, ComponentLifeCycle {
+	/** reset enumeration to first element */
+	public void reset();
 }

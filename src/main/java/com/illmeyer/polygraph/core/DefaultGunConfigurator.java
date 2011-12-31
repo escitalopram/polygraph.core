@@ -25,7 +25,7 @@ public class DefaultGunConfigurator implements GunConfigurator {
 	private TemplateLoader templateLoader;
 	
 	@Override
-	public void init() {
+	public void initialize() {
 		Map<String,Module> modules = new HashMap<String,Module>();
 
 		Reflections ref = new Reflections(
@@ -76,7 +76,7 @@ public class DefaultGunConfigurator implements GunConfigurator {
 			if (e.getValue() instanceof MessageType) messageTypes.put(e.getKey(),(MessageType)e.getValue());				
 			if (e.getValue() instanceof Extension) extensions.put(e.getKey(),(Extension)e.getValue());
 			if (e.getValue() instanceof Template) templates.put(e.getKey(),(Template)e.getValue());
-			e.getValue().init();
+			e.getValue().initialize();
 		}
 		if (templates.isEmpty()) log.error("No usable templates found");
 		if (messageTypes.isEmpty()) log.error("No usable message types found");

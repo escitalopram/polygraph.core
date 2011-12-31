@@ -44,7 +44,7 @@ class E1 implements Extension {
 	String[] dependencies;
 	
 	@Override
-	public void init() {
+	public void initialize() {
 	}
 
 	@Override
