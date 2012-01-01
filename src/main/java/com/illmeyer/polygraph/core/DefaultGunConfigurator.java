@@ -95,9 +95,20 @@ public class DefaultGunConfigurator implements GunConfigurator {
 
 	@Override
 	public void registerModules(Gun g) {
-		for (Map<String,Module> modules : new Map[]{messageTypes,extensions,templates})
-		for(Entry<String, Module> e: modules.entrySet()) {
-			g.getContext().put(e.getKey(), e.getValue().createContext());
+		Map<String,Object> mtm = new HashMap<String, Object>();
+		g.getContext().put("mt", mtm);
+		Map<String,Object> extm = new HashMap<String, Object>();
+		g.getContext().put("ext", extm);
+		Map<String,Object> tplm = new HashMap<String, Object>();
+		g.getContext().put("tpl", tplm);
+		for(Entry<String, MessageType> e: messageTypes.entrySet()) {
+			mtm.put(e.getKey(), e.getValue().createContext());
+		}
+		for(Entry<String, Extension> e: extensions.entrySet()) {
+			extm.put(e.getKey(), e.getValue().createContext());
+		}
+		for(Entry<String, Template> e: templates.entrySet()) {
+			tplm.put(e.getKey(), e.getValue().createContext());
 		}
 		if (activeTemplate!=null && templates.containsKey(activeTemplate)) {
 			Template templateObject = templates.get(activeTemplate);

@@ -51,7 +51,7 @@ public class Gun implements ComponentLifeCycle {
 		addressSupplier.reset();
 		Configuration conf = getConfiguration();
 		Template tpl = conf.getTemplate(initialTemplate);
-		context.put("tpl", templateData);
+		context.put("td", templateData);
 		while (addressSupplier.hasMoreElements()) {
 			Address a=null;
 			try {
