@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
@@ -24,6 +27,8 @@ public class DefaultGunConfigurator implements GunConfigurator {
 	
 	private TemplateLoader templateLoader;
 	
+	@Getter @Setter private String activeTemplate;
+	
 	@Override
 	public void initialize() {
 		Map<String,Module> modules = new HashMap<String,Module>();
@@ -33,7 +38,6 @@ public class DefaultGunConfigurator implements GunConfigurator {
 				.setUrls(ClasspathHelper.forJavaClassPath())
 				.setScanners(new SubTypesScanner())
 		);
-		
 		Set<Class<? extends Module>> moduleClasses = ref.getSubTypesOf(Module.class);
 		Map<URL,Set<Class<? extends Module>>> sourceToModule = new HashMap<URL,Set<Class<? extends Module>>>();
 
@@ -94,6 +98,12 @@ public class DefaultGunConfigurator implements GunConfigurator {
 		for (Map<String,Module> modules : new Map[]{messageTypes,extensions,templates})
 		for(Entry<String, Module> e: modules.entrySet()) {
 			g.getContext().put(e.getKey(), e.getValue().createContext());
+		}
+		if (activeTemplate!=null && templates.containsKey(activeTemplate)) {
+			Template templateObject = templates.get(activeTemplate);
+			MessageType mt = (MessageType)messageTypes.get(templateObject.getMessageType());
+			g.setInitialTemplate(templateObject.getMainTemplatePath());
+			g.setMt(mt);
 		}
 	}
 

@@ -31,6 +31,8 @@ public class Gun implements ComponentLifeCycle {
 	private MessageDispatcher dispatcher;
 	private String initialTemplate;
 	private MessageType mt;
+	private TemplateDataProvider templateDataProvider;
+	@Setter(AccessLevel.PRIVATE)
 	private Object templateData;
 	private TemplateLoader loader;
 	private GunConfigurator configurator;
@@ -88,6 +90,10 @@ public class Gun implements ComponentLifeCycle {
 		}
 		addressSupplier.initialize();
 		dispatcher.initialize();
+		if (templateDataProvider!=null) {
+			templateDataProvider.initialize();
+			templateData=templateDataProvider.getTemplateData();
+		}
 	}
 
 	@Override
@@ -95,6 +101,8 @@ public class Gun implements ComponentLifeCycle {
 		if (configurator!=null) configurator.destroy();
 		addressSupplier.destroy();
 		dispatcher.destroy();
+		if (templateDataProvider!=null)
+			templateDataProvider.destroy();
 	}
 	
 }

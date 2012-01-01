@@ -20,7 +20,6 @@ public class TestCore {
 		g.setDispatcher(getMockedMessageDispatcher());
 		g.setInitialTemplate("tpl/test/main");
 		g.setLoader(getMockedTemplateLoader());
-		g.setTemplateData(null);
 		g.initialize();
 		g.trigger();
 		g.destroy();

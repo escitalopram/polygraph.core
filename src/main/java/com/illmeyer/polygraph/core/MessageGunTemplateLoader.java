@@ -58,8 +58,13 @@ public class MessageGunTemplateLoader extends URLTemplateLoader {
 		URL base = mod.getClass().getProtectionDomain().getCodeSource().getLocation();
 		URL result=null;
 		try {
-			result = new URL("jar:"+base+"!"+file);
+			result = new URL("jar:"+base+"!/vfs"+file);
 		} catch (MalformedURLException e) {
+		}
+		try {
+			result.openStream().close();
+		} catch (Exception e) {
+			return null;
 		}
 		return result;
 	}
