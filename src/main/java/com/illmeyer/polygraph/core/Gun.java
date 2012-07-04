@@ -9,6 +9,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.cache.TemplateLoader;
+import freemarker.core.Environment;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -58,16 +59,17 @@ public class Gun implements ComponentLifeCycle {
 				a=addressSupplier.nextElement();
 				context.put("addr",a);
 				StringWriter output = new StringWriter(4096);
-				tpl.process(context, output);
+				Environment e = tpl.createProcessingEnvironment(context, output);
+				e.process();
 				output.close();
 				String result = output.toString();
-				if(mt!=null) result=mt.postProcessMessage(result);
-				dispatcher.dispatchMessage(result);
+				Message m=mt.createMessage(result,e.getDataModel());
+				dispatcher.dispatchMessage(m);
 			} catch (TemplateException e) {
-				log.error("Error processing address " + a.getAddrs().toString());
+				log.error("Error processing address " + a.getAddrs().toString(), e);
 				
 			} catch (Exception e) {
-				log.error("Error processing address " + a.getAddrs().toString());
+				log.error("Error processing address " + a.getAddrs().toString(), e);
 			}
 		}
 	}
@@ -90,6 +92,7 @@ public class Gun implements ComponentLifeCycle {
 		}
 		addressSupplier.initialize();
 		dispatcher.initialize();
+		mt.initialize();
 		if (templateDataProvider!=null) {
 			templateDataProvider.initialize();
 			templateData=templateDataProvider.getTemplateData();
@@ -101,6 +104,7 @@ public class Gun implements ComponentLifeCycle {
 		if (configurator!=null) configurator.destroy();
 		addressSupplier.destroy();
 		dispatcher.destroy();
+		mt.destroy();
 		if (templateDataProvider!=null)
 			templateDataProvider.destroy();
 	}

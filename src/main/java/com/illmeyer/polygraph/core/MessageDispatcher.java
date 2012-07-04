@@ -8,7 +8,7 @@ package com.illmeyer.polygraph.core;
 public interface MessageDispatcher extends ComponentLifeCycle {
 	/**
 	 * Called whenever the Gun has a complete message. You must take care of dispatching the Messager to the matching Sender.
-	 * @param message the message to dispatch
+	 * @param m the message to dispatch
 	 */
-	public void dispatchMessage(String message);
+	public void dispatchMessage(Message m);
 }
