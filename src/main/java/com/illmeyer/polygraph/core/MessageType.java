@@ -1,7 +1,7 @@
 package com.illmeyer.polygraph.core;
 
-import freemarker.template.TemplateHashModel;
+import freemarker.core.Environment;
 
 public interface MessageType extends Module {
-	public Message createMessage(String messageText, TemplateHashModel templateHashModel);
+	public Message createMessage(String messageText, Environment environment);
 }

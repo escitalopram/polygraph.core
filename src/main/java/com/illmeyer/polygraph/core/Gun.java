@@ -40,9 +40,6 @@ public class Gun implements ComponentLifeCycle {
 	@Setter(AccessLevel.PRIVATE)
 	private Map<String,Object> context = new HashMap<String,Object>();
 	
-	public void configure(GunConfigurator configurator) {
-	}
-	
 	/**
 	 * Triggers the message Generation process.
 	 * @throws IOException
@@ -63,7 +60,7 @@ public class Gun implements ComponentLifeCycle {
 				e.process();
 				output.close();
 				String result = output.toString();
-				Message m=mt.createMessage(result,e.getDataModel());
+				Message m=mt.createMessage(result,e);
 				dispatcher.dispatchMessage(m);
 			} catch (TemplateException e) {
 				log.error("Error processing address " + a.getAddrs().toString(), e);

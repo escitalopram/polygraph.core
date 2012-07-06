@@ -9,6 +9,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import freemarker.cache.TemplateLoader;
+import freemarker.core.Environment;
 import freemarker.template.TemplateHashModel;
 import static org.mockito.Mockito.stub;
 import static org.mockito.Mockito.mock;
@@ -47,9 +48,9 @@ public class TestCore {
 			
 			@Override
 			public Message createMessage(String messageText,
-					TemplateHashModel templateHashModel) {
+					Environment environment) {
 				Assert.assertTrue(initialized);
-				Message result = new Message();
+				Message result = new Message("test");
 				MessagePart mp = new MessagePart();
 				mp.setStringMessage(messageText);
 				result.getParts().put("main", mp);
@@ -72,7 +73,7 @@ public class TestCore {
 	public TemplateLoader getMockedTemplateLoader() throws IOException {
 		TemplateLoader tl = mock(TemplateLoader.class);
 		stub(tl.findTemplateSource("tpl/test/main")).toReturn("main");
-		stub(tl.getReader("main", "UTF-8")).toReturn(new StringReader("Hallo ${addr.fields.firstname}!"));
+		stub(tl.getReader("main", "UTF-8")).toReturn(new StringReader("<#assign x=\"hallo\">Hallo ${addr.fields.firstname}!"));
 		return tl;
 	}
 	

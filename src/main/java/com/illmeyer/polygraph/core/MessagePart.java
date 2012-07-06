@@ -1,5 +1,6 @@
 package com.illmeyer.polygraph.core;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,11 +8,14 @@ import java.util.Map;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @NoArgsConstructor
-public class MessagePart {
+@Data
+@NoArgsConstructor
+public class MessagePart implements Serializable {
+	private static final long serialVersionUID = 466508946491072736L;
+	
 	private byte[] message = null;
 	private String encoding = null;
-	private Map<String,Object> properties = new HashMap<String,Object>();
+	final private Map<String,Object> properties = new HashMap<String,Object>();
 	
 	public String getStringMessage() {
 		try {
