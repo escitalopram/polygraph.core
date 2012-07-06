@@ -8,6 +8,14 @@ import java.util.Map;
 import junit.framework.Assert;
 
 import org.junit.Test;
+
+import com.illmeyer.polygraph.core.data.Address;
+import com.illmeyer.polygraph.core.data.Message;
+import com.illmeyer.polygraph.core.data.MessagePart;
+import com.illmeyer.polygraph.core.spi.AddressSupplier;
+import com.illmeyer.polygraph.core.spi.MessageDispatcher;
+import com.illmeyer.polygraph.core.spi.MessageType;
+
 import freemarker.cache.TemplateLoader;
 import freemarker.core.Environment;
 import freemarker.template.TemplateHashModel;

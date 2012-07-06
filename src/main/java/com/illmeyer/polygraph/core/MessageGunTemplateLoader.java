@@ -7,6 +7,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.illmeyer.polygraph.core.interfaces.Module;
+import com.illmeyer.polygraph.core.spi.Extension;
+import com.illmeyer.polygraph.core.spi.MessageType;
+import com.illmeyer.polygraph.core.spi.Template;
+
 import lombok.NoArgsConstructor;
 import freemarker.cache.URLTemplateLoader;
 

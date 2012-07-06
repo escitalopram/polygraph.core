@@ -1,4 +1,4 @@
-package com.illmeyer.polygraph.core;
+package com.illmeyer.polygraph.core.init;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -15,6 +15,15 @@ import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
+
+import com.illmeyer.polygraph.core.Gun;
+import com.illmeyer.polygraph.core.MessageGunTemplateLoader;
+import com.illmeyer.polygraph.core.interfaces.Module;
+import com.illmeyer.polygraph.core.spi.Extension;
+import com.illmeyer.polygraph.core.spi.GunConfigurator;
+import com.illmeyer.polygraph.core.spi.MessageType;
+import com.illmeyer.polygraph.core.spi.Template;
+
 import freemarker.cache.TemplateLoader;
 
 //@CommonsLog // ?!?

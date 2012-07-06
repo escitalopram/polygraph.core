@@ -1,8 +1,9 @@
-package com.illmeyer.polygraph.core;
+package com.illmeyer.polygraph.core.data;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
 
 import lombok.AccessLevel;
 import lombok.Data;

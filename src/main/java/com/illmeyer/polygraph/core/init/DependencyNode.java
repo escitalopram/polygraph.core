@@ -1,7 +1,11 @@
-package com.illmeyer.polygraph.core;
+package com.illmeyer.polygraph.core.init;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.illmeyer.polygraph.core.interfaces.ExtensionDependent;
+import com.illmeyer.polygraph.core.interfaces.Module;
+import com.illmeyer.polygraph.core.spi.Template;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

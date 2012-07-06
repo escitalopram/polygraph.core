@@ -1,4 +1,4 @@
-package com.illmeyer.polygraph.core;
+package com.illmeyer.polygraph.core.interfaces;
 
 import java.util.List;
 

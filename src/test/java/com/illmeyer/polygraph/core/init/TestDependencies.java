@@ -1,4 +1,4 @@
-package com.illmeyer.polygraph.core;
+package com.illmeyer.polygraph.core.init;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,6 +8,10 @@ import lombok.AllArgsConstructor;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.illmeyer.polygraph.core.init.DependencyResolver;
+import com.illmeyer.polygraph.core.interfaces.Module;
+import com.illmeyer.polygraph.core.spi.Extension;
 
 public class TestDependencies {
 	@Test

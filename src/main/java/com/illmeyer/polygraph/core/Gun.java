@@ -5,6 +5,15 @@ import java.util.Map;
 import java.io.IOException;
 import java.io.StringWriter;
 
+import com.illmeyer.polygraph.core.data.Address;
+import com.illmeyer.polygraph.core.data.Message;
+import com.illmeyer.polygraph.core.interfaces.ComponentLifeCycle;
+import com.illmeyer.polygraph.core.spi.AddressSupplier;
+import com.illmeyer.polygraph.core.spi.GunConfigurator;
+import com.illmeyer.polygraph.core.spi.MessageDispatcher;
+import com.illmeyer.polygraph.core.spi.MessageType;
+import com.illmeyer.polygraph.core.spi.TemplateDataProvider;
+
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;

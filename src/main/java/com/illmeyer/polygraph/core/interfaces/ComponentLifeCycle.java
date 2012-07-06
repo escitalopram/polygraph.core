@@ -1,4 +1,4 @@
-package com.illmeyer.polygraph.core;
+package com.illmeyer.polygraph.core.interfaces;
 
 public interface ComponentLifeCycle {
 	public void initialize();

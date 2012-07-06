@@ -1,10 +1,12 @@
-package com.illmeyer.polygraph.core;
+package com.illmeyer.polygraph.core.init;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.illmeyer.polygraph.core.interfaces.Module;
 
 import lombok.Getter;
 

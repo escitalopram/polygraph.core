@@ -1,4 +1,7 @@
-package com.illmeyer.polygraph.core;
+package com.illmeyer.polygraph.core.spi;
+
+import com.illmeyer.polygraph.core.data.Message;
+import com.illmeyer.polygraph.core.interfaces.ComponentLifeCycle;
 
 /**
  * Implement this interface if you want to receive messages from the Gun

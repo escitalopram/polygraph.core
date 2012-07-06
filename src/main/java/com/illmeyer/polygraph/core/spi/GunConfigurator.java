@@ -1,4 +1,7 @@
-package com.illmeyer.polygraph.core;
+package com.illmeyer.polygraph.core.spi;
+
+import com.illmeyer.polygraph.core.Gun;
+import com.illmeyer.polygraph.core.interfaces.ComponentLifeCycle;
 
 import freemarker.cache.TemplateLoader;
 

@@ -1,6 +1,9 @@
-package com.illmeyer.polygraph.core;
+package com.illmeyer.polygraph.core.spi;
 
 import java.util.Enumeration;
+
+import com.illmeyer.polygraph.core.data.Address;
+import com.illmeyer.polygraph.core.interfaces.ComponentLifeCycle;
 
 /**
  * Supplies Address objects to the Gun

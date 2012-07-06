@@ -1,4 +1,4 @@
-package com.illmeyer.polygraph.core;
+package com.illmeyer.polygraph.core.data;
 
 import java.util.HashMap;
 import java.util.Map;
