@@ -42,12 +42,14 @@ public class Gun implements ComponentLifeCycle {
 	private String initialTemplate;
 	private MessageType mt;
 	private TemplateDataProvider templateDataProvider;
-	@Setter(AccessLevel.PRIVATE)
+	@Setter(AccessLevel.NONE)
 	private Object templateData;
 	private TemplateLoader loader;
 	private GunConfigurator configurator;
-	@Setter(AccessLevel.PRIVATE)
+	@Setter(AccessLevel.NONE)
 	private Map<String,Object> context = new HashMap<String,Object>();
+	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
+	private Template template = null;
 	
 	/**
 	 * Triggers the message Generation process.
@@ -56,20 +58,12 @@ public class Gun implements ComponentLifeCycle {
 	
 	public void trigger() throws IOException {
 		addressSupplier.reset();
-		Configuration conf = getConfiguration();
-		Template tpl = conf.getTemplate(initialTemplate);
-		context.put("td", templateData);
+		Address a=null;
 		while (addressSupplier.hasMoreElements()) {
-			Address a=null;
 			try {
 				a=addressSupplier.nextElement();
-				context.put("addr",a);
-				StringWriter output = new StringWriter(4096);
-				Environment e = tpl.createProcessingEnvironment(context, output);
-				e.process();
-				output.close();
-				String result = output.toString();
-				Message m=mt.createMessage(result,e);
+				Message m = createMessage(a);
+				if (m==null) continue;
 				dispatcher.dispatchMessage(m);
 			} catch (TemplateException e) {
 				log.error("Error processing address " + a.getAddrs().toString(), e);
@@ -78,6 +72,16 @@ public class Gun implements ComponentLifeCycle {
 				log.error("Error processing address " + a.getAddrs().toString(), e);
 			}
 		}
+	}
+	public Message createMessage(Address a) throws IOException, TemplateException {
+			context.put("addr",a);
+			StringWriter output = new StringWriter(4096);
+			Environment e = template.createProcessingEnvironment(context, output);
+			e.process();
+			output.close();
+			// if (e.skip) return null;
+			String tplresult = output.toString();
+			return mt.createMessage(tplresult,e);
 	}
 	/**
 	 * Generate default Freemarker Configuration object
@@ -98,19 +102,28 @@ public class Gun implements ComponentLifeCycle {
 		}
 		addressSupplier.initialize();
 		dispatcher.initialize();
-		mt.initialize();
 		if (templateDataProvider!=null) {
 			templateDataProvider.initialize();
 			templateData=templateDataProvider.getTemplateData();
 		}
+		try {
+			prepareTemplate();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
+	protected void prepareTemplate() throws IOException {
+		Configuration conf = getConfiguration();
+		template = conf.getTemplate(initialTemplate);
+		context.put("td", templateData);
+	}
+	
 	@Override
 	public void destroy() {
 		if (configurator!=null) configurator.destroy();
 		addressSupplier.destroy();
 		dispatcher.destroy();
-		mt.destroy();
 		if (templateDataProvider!=null)
 			templateDataProvider.destroy();
 	}
