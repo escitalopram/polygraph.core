@@ -85,7 +85,7 @@ public class DefaultGunConfigurator implements GunConfigurator {
 		r.checkDependencies();
 		for (String s : r.getUnsatisfiedModules()) work.remove(s);
 		for(Entry<String, Module> e : work.entrySet()) {
-			if(r.getUnsatisfiedModules().contains(r)) continue;
+			if(r.getUnsatisfiedModules().contains(e.getKey())) continue;
 			if (e.getValue().getClass().getName().equals("com.illmeyer.polygraph.syslib.Syslib")) {
 				syslib=e.getValue();
 			} else {
