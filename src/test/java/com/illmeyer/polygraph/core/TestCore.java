@@ -39,10 +39,8 @@ public class TestCore {
 	
 	private MessageType getMockedMessageType() {
 		return new MessageType() {
-			boolean initialized=false;
 			@Override
 			public void initialize() {
-				initialized=true;
 			}
 			
 			@Override
@@ -57,7 +55,6 @@ public class TestCore {
 			@Override
 			public Message createMessage(String messageText,
 					Environment environment) {
-				Assert.assertTrue(initialized);
 				Message result = new Message("test");
 				MessagePart mp = new MessagePart();
 				mp.setStringMessage(messageText);
