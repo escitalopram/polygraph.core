@@ -20,7 +20,6 @@ import freemarker.template.TemplateException;
 import freemarker.cache.TemplateLoader;
 import freemarker.core.Environment;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

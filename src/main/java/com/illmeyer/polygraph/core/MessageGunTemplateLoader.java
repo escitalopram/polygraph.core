@@ -1,6 +1,5 @@
 package com.illmeyer.polygraph.core;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
@@ -64,6 +63,7 @@ public class MessageGunTemplateLoader extends URLTemplateLoader {
 		URL result=null;
 		try {
 			result = new URL("jar:"+base+"!/vfs"+file);
+			System.out.println("Looking up "+ result);
 		} catch (MalformedURLException e) {
 		}
 		try {

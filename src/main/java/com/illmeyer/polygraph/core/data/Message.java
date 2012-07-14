@@ -4,10 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Setter;
 
 @Data
 public class Message implements Serializable {

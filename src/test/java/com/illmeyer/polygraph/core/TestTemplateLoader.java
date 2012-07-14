@@ -1,9 +1,6 @@
 package com.illmeyer.polygraph.core;
 
-import java.io.File;
 import java.io.IOException;
-
-import junit.framework.Assert;
 
 import org.junit.Test;
 

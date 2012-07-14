@@ -128,7 +128,7 @@ public class DefaultGunConfigurator implements GunConfigurator {
 		}
 		if (activeTemplate!=null && templates.containsKey(activeTemplate)) {
 			Template templateObject = templates.get(activeTemplate);
-			MessageType mt = (MessageType)messageTypes.get(templateObject.getMessageType());
+			MessageType mt = messageTypes.get(templateObject.getMessageType());
 			g.setInitialTemplate(templateObject.getMainTemplatePath());
 			g.setMt(mt);
 		}
@@ -136,7 +136,9 @@ public class DefaultGunConfigurator implements GunConfigurator {
 
 	@Override
 	public void destroy() {
-		for (Map<String,Module> modules : new Map[]{messageTypes,extensions,templates})
+		@SuppressWarnings("unchecked")
+		Map<String,Module>[] allModules = new Map[]{messageTypes,extensions,templates};
+		for (Map<String,Module> modules : allModules)
 		for (Module m:modules.values()) {
 			m.destroy();
 		}

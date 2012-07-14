@@ -2,7 +2,6 @@ package com.illmeyer.polygraph.core;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.Assert;
@@ -18,7 +17,6 @@ import com.illmeyer.polygraph.core.spi.MessageType;
 
 import freemarker.cache.TemplateLoader;
 import freemarker.core.Environment;
-import freemarker.template.TemplateHashModel;
 import static org.mockito.Mockito.stub;
 import static org.mockito.Mockito.mock;
 
@@ -96,8 +94,6 @@ public class TestCore {
 
 			@Override
 			public void destroy() {
-				// TODO Auto-generated method stub
-				
 			}
 		};
 		return md;
