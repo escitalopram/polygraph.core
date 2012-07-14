@@ -33,7 +33,7 @@ public class DefaultGunConfigurator implements GunConfigurator {
 	private Map<String,Extension> extensions = new HashMap<String, Extension>();
 	private Map<String,Template> templates = new HashMap<String,Template>();
 	private Map<String,MessageType> messageTypes = new HashMap<String,MessageType>();
-	
+	private Module syslib;
 	private TemplateLoader templateLoader;
 	
 	@Getter @Setter private String activeTemplate;
@@ -86,9 +86,13 @@ public class DefaultGunConfigurator implements GunConfigurator {
 		for (String s : r.getUnsatisfiedModules()) work.remove(s);
 		for(Entry<String, Module> e : work.entrySet()) {
 			if(r.getUnsatisfiedModules().contains(r)) continue;
-			if (e.getValue() instanceof MessageType) messageTypes.put(e.getKey(),(MessageType)e.getValue());				
-			if (e.getValue() instanceof Extension) extensions.put(e.getKey(),(Extension)e.getValue());
-			if (e.getValue() instanceof Template) templates.put(e.getKey(),(Template)e.getValue());
+			if (e.getValue().getClass().getName().equals("com.illmeyer.polygraph.syslib.Syslib")) {
+				syslib=e.getValue();
+			} else {
+				if (e.getValue() instanceof MessageType) messageTypes.put(e.getKey(),(MessageType)e.getValue());				
+				if (e.getValue() instanceof Extension) extensions.put(e.getKey(),(Extension)e.getValue());
+				if (e.getValue() instanceof Template) templates.put(e.getKey(),(Template)e.getValue());
+			}
 			e.getValue().initialize();
 		}
 		if (templates.isEmpty()) log.error("No usable templates found");
@@ -111,13 +115,16 @@ public class DefaultGunConfigurator implements GunConfigurator {
 		Map<String,Object> tplm = new HashMap<String, Object>();
 		g.getContext().put("tpl", tplm);
 		for(Entry<String, MessageType> e: messageTypes.entrySet()) {
-			mtm.put(e.getKey(), e.getValue().createContext());
+			mtm.put(e.getKey().replace('.', '_'), e.getValue().createContext());
 		}
 		for(Entry<String, Extension> e: extensions.entrySet()) {
-			extm.put(e.getKey(), e.getValue().createContext());
+			extm.put(e.getKey().replace('.', '_'), e.getValue().createContext());
 		}
 		for(Entry<String, Template> e: templates.entrySet()) {
-			tplm.put(e.getKey(), e.getValue().createContext());
+			tplm.put(e.getKey().replace('.', '_'), e.getValue().createContext());
+		}
+		if (syslib!=null) {
+			g.getContext().put("sys", syslib.createContext());
 		}
 		if (activeTemplate!=null && templates.containsKey(activeTemplate)) {
 			Template templateObject = templates.get(activeTemplate);
