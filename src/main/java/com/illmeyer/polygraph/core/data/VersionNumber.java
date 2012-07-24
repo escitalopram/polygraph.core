@@ -17,14 +17,36 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package com.illmeyer.polygraph.core.interfaces;
+package com.illmeyer.polygraph.core.data;
 
-import java.util.Map;
+import lombok.Data;
 
-import com.illmeyer.polygraph.core.data.VersionNumber;
+/**
+ * Semantic versioning - see http://semver.org/
+ * @author escitalopram
+ *
+ */
+@Data
+public class VersionNumber {
+	/**
+	 * Major version number to be increased if backwards compatibility is broken
+	 */
+	public final int major;
+	/**
+	 * Minor version number indicates addition of important new features
+	 */
+	public final int minor;
+	/**
+	 * Patch version indicates small bugfixes
+	 */
+	public final int patch;
 
-
-public interface Module extends ComponentLifeCycle {
-	public Map<String,Object> createContext();
-	public VersionNumber getVersionNumber();
+	@Override
+	public String toString() {
+		return major+"."+minor+"."+patch;
+	}
+	
+	public boolean meetsRequirement(VersionNumber r) {
+		return r.major==major && r.minor<= minor && (r.minor<minor || r.patch<=patch);
+	}
 }

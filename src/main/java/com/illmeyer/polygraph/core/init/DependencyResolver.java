@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.illmeyer.polygraph.core.data.DependencySpecification;
 import com.illmeyer.polygraph.core.interfaces.Module;
 
 import lombok.Getter;
@@ -55,13 +56,17 @@ public class DependencyResolver {
 
 		currentNode.setInCheckProcess(true);
 		boolean dependencyFailed=false;
-		for(String dep : currentNode.getDependencies()) {
-			if(!modules.containsKey(dep))
+		for(DependencySpecification dep : currentNode.getDependencies()) {
+			if(!modules.containsKey(dep.getModuleName())) 
 				dependencyFailed=true;
 			else {
-				DependencyNode toCheck = modules.get(dep);
-				checkDependenciesOf(dep);
-				if (!toCheck.isSatisfied() && !toCheck.isInCheckProcess()) dependencyFailed=true;
+				DependencyNode toCheck = modules.get(dep.getModuleName());
+				if (!toCheck.getVersionNumber().meetsRequirement(dep.getVersion())) {
+					dependencyFailed=true;
+				} else {
+					checkDependenciesOf(dep.getModuleName());
+					if (!toCheck.isSatisfied() && !toCheck.isInCheckProcess()) dependencyFailed=true;
+				}
 			}
 		}
 		currentNode.setInCheckProcess(false);

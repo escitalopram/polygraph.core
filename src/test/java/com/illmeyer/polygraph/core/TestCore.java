@@ -30,6 +30,7 @@ import org.junit.Test;
 import com.illmeyer.polygraph.core.data.Address;
 import com.illmeyer.polygraph.core.data.Message;
 import com.illmeyer.polygraph.core.data.MessagePart;
+import com.illmeyer.polygraph.core.data.VersionNumber;
 import com.illmeyer.polygraph.core.spi.AddressSupplier;
 import com.illmeyer.polygraph.core.spi.MessageDispatcher;
 import com.illmeyer.polygraph.core.spi.MessageType;
@@ -77,6 +78,11 @@ public class TestCore {
 				mp.setStringMessage(messageText);
 				result.getParts().put("main", mp);
 				return result;
+			}
+
+			@Override
+			public VersionNumber getVersionNumber() {
+				return new VersionNumber(0, 1, 0);
 			}
 		};
 	}

@@ -28,15 +28,18 @@ import lombok.AllArgsConstructor;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.illmeyer.polygraph.core.data.DependencySpecification;
+import com.illmeyer.polygraph.core.data.VersionNumber;
 import com.illmeyer.polygraph.core.init.DependencyResolver;
 import com.illmeyer.polygraph.core.interfaces.Module;
 import com.illmeyer.polygraph.core.spi.Extension;
 
 public class TestDependencies {
+	static final VersionNumber v010 = new VersionNumber(0, 1, 0);
 	@Test
 	public void testSimpleDependency() {
-		Extension e1 = new E1(new String[]{E2.class.getName()});
-		Extension e2 = new E2(new String[]{});
+		Extension e1 = new E1(new DependencySpecification[]{new DependencySpecification(E2.class.getName(),v010)});
+		Extension e2 = new E2(new DependencySpecification[]{});
 
 		DependencyResolver r = new DependencyResolver(Arrays.asList(new Module[]{e1,e2}));
 		r.checkDependencies();
@@ -44,8 +47,8 @@ public class TestDependencies {
 	}
 	@Test
 	public void testSimpleDependencyFail() {
-		Extension e1 = new E1(new String[]{E3.class.getName()});
-		Extension e2 = new E2(new String[]{});
+		Extension e1 = new E1(new DependencySpecification[]{new DependencySpecification(E3.class.getName(),v010)});
+		Extension e2 = new E2(new DependencySpecification[]{});
 
 		DependencyResolver r = new DependencyResolver(Arrays.asList(new Module[]{e1,e2}));
 		r.checkDependencies();
@@ -54,8 +57,8 @@ public class TestDependencies {
 	}
 	@Test
 	public void testCircularDependency() {
-		Extension e1 = new E1(new String[]{E2.class.getName()});
-		Extension e2 = new E2(new String[]{E1.class.getName()});
+		Extension e1 = new E1(new DependencySpecification[]{new DependencySpecification(E2.class.getName(),v010)});
+		Extension e2 = new E2(new DependencySpecification[]{new DependencySpecification(E1.class.getName(),v010)});
 		DependencyResolver r = new DependencyResolver(Arrays.asList(new Module[]{e1,e2}));
 		r.checkDependencies();
 		Assert.assertEquals(0, r.getUnsatisfiedModules().size());
@@ -64,7 +67,7 @@ public class TestDependencies {
 @AllArgsConstructor
 class E1 implements Extension {
 
-	String[] dependencies;
+	DependencySpecification[] dependencies;
 	
 	@Override
 	public void initialize() {
@@ -80,19 +83,24 @@ class E1 implements Extension {
 	}
 
 	@Override
-	public List<String> getRequiredExtensions() {
+	public List<DependencySpecification> getRequiredExtensions() {
 		return Arrays.asList(dependencies);
+	}
+
+	@Override
+	public VersionNumber getVersionNumber() {
+		return TestDependencies.v010;
 	}
 	
 }
 class E2 extends E1 {
-	public E2(String[] dependencies) {
+	public E2(DependencySpecification[] dependencies) {
 		super(dependencies);
 	}
 }
 class E3 extends E1 {
 
-	public E3(String[] dependencies) {
+	public E3(DependencySpecification[] dependencies) {
 		super(dependencies);
 	}
 }

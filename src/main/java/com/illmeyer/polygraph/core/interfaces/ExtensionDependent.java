@@ -21,6 +21,8 @@ package com.illmeyer.polygraph.core.interfaces;
 
 import java.util.List;
 
+import com.illmeyer.polygraph.core.data.DependencySpecification;
+
 public interface ExtensionDependent {
-	List<String> getRequiredExtensions();
+	List<DependencySpecification> getRequiredExtensions();
 }

@@ -17,14 +17,30 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package com.illmeyer.polygraph.core.interfaces;
+package com.illmeyer.polygraph.core.data;
 
-import java.util.Map;
+import lombok.Data;
 
-import com.illmeyer.polygraph.core.data.VersionNumber;
+/**
+ * Specifies a dependency. Equality is reduced to the module name so dependency
+ * specifications can be searched for more easily
+ *
+ */
+@Data
+public class DependencySpecification {
+	private final String moduleName;
+	private final VersionNumber version;
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o==null) return false;
+		if (!o.getClass().equals(DependencySpecification.class)) return false;
+		return ((DependencySpecification)o).moduleName.equals(moduleName);
+	}
 
+	@Override
+	public int hashCode() {
+		return moduleName.hashCode();
+	}
 
-public interface Module extends ComponentLifeCycle {
-	public Map<String,Object> createContext();
-	public VersionNumber getVersionNumber();
 }

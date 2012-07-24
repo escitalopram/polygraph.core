@@ -19,10 +19,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.illmeyer.polygraph.core.spi;
 
+import com.illmeyer.polygraph.core.data.DependencySpecification;
 import com.illmeyer.polygraph.core.interfaces.ExtensionDependent;
 import com.illmeyer.polygraph.core.interfaces.Module;
 
 public interface Template extends Module, ExtensionDependent {
 	String getMainTemplatePath();
-	String getMessageType();
+	DependencySpecification getMessageType();
 }
