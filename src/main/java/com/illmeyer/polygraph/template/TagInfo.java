@@ -1,6 +1,6 @@
 /*
 This file is part of the Polygraph bulk messaging framework
-Copyright (C) 2012 Wolfgang Illmeyer
+Copyright (C) 2013 Wolfgang Illmeyer
 
 The Polygraph framework is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -17,27 +17,16 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package com.illmeyer.polygraph.core;
+package com.illmeyer.polygraph.template;
 
-public final class CoreConstants {
-	/**
-	 * Used as key to a custom attribute in the freemarker Environment to store a map of MessageParts used in the current message
-	 */
-	public static final String ECA_PARTS="polygraph.syslib.parts";
-	
-	/**
-	 * Used as key to a custom attribute in the freemarker Environment to store the currently active MessagePart
-	 */
-	public static final String ECA_CURRENT_PART="polygraph.syslib.currentPart";
-	
-	/**
-	 * Stack of Tags
-	 */
-	public static final String ECA_TAGSTACK="polygraph.core.tagStack";
-	
-	/**
-	 * Prevent instantiation
-	 */
-	private CoreConstants() {
-	}
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface TagInfo {
+	String name();
+	int loopVarCount();
 }
