@@ -147,7 +147,7 @@ public class DefaultGunConfigurator implements GunConfigurator {
 		}
 		if (activeTemplate!=null && templates.containsKey(activeTemplate)) {
 			Template templateObject = templates.get(activeTemplate);
-			MessageType mt = messageTypes.get(templateObject.getMessageType());
+			MessageType mt = messageTypes.get(templateObject.getMessageType().getModuleName());
 			g.setInitialTemplate(templateObject.getMainTemplatePath());
 			g.setMt(mt);
 		}
