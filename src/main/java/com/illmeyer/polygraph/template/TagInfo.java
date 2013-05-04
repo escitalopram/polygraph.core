@@ -27,6 +27,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface TagInfo {
+	/** the name of the tag as it appears in the template **/
 	String name();
-	int loopVarCount();
+	
+	/** the exact number of loop variables allowed in the tag */
+	int loopVarCount() default 0;
+	
+	/** automatically throw an exception if a non-nestable tag is nested */ 
+	boolean nestable() default true;
 }

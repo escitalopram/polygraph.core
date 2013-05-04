@@ -52,6 +52,10 @@ public class TagAdapter implements TemplateDirectiveModel {
 			throw new TemplateException(String.format("%s is not a valid Tag class", tag.getClass().getName()),env);
 		if (ti.loopVarCount()!=loopVars.length)
 			throw new TemplateException(String.format("%s needs exactly %i loop variables, but got %i",tf.getClass().getName(),ti.loopVarCount(),loopVars.length), env);
+		if (!ti.nestable()) 
+			for (PolygraphTag st : pe.getTagStack())
+				if (tag.getClass().equals(st.getClass()))
+					throw new TemplateException("Nesting this tag is not allowed", env);
 		pe.getTagStack().push(tag);
 		try {
 			tag.execute(pe);
