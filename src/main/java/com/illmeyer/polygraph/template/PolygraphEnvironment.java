@@ -139,4 +139,16 @@ public class PolygraphEnvironment {
 		}
 		throw new PolygraphTemplateException(String.format("Ancestor tag of type %s expected but not found.",tagClass.getName()));
 	}
+	
+	public void setCustomAttribute(String key, Object value) {
+		env.setCustomAttribute(key, value);
+	}
+	
+	public Object getCustomAttribute(String key) {
+		return env.getCustomAttribute(key);
+	}
+
+	public boolean hasBody() {
+		return body!=null;
+	}
 }
