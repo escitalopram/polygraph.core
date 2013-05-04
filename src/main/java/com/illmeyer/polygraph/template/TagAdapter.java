@@ -56,6 +56,10 @@ public class TagAdapter implements TemplateDirectiveModel {
 			for (PolygraphTag st : pe.getTagStack())
 				if (tag.getClass().equals(st.getClass()))
 					throw new TemplateException("Nesting this tag is not allowed", env);
+		if (ti.body()==BodyExistence.REQUIRED && body==null)
+			throw new TemplateException("A tag body is required", env);
+		if (ti.body()==BodyExistence.FORBIDDEN && body!=null)
+			throw new TemplateException("Unexpected tag body",env);
 		pe.getTagStack().push(tag);
 		try {
 			tag.execute(pe);

@@ -19,23 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.illmeyer.polygraph.template;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface TagInfo {
-	/** the name of the tag as it appears in the template **/
-	String name();
-	
-	/** the exact number of loop variables allowed in the tag */
-	int loopVarCount() default 0;
-	
-	/** automatically throw an exception if a non-nestable tag is nested */ 
-	boolean nestable() default true;
-	
-	/** automatically check for the existence of a tag body */
-	BodyExistence body() default BodyExistence.ALLOWED;
+public enum BodyExistence {
+	ALLOWED,
+	REQUIRED,
+	FORBIDDEN
 }
