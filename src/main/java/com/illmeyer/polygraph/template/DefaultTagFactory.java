@@ -64,7 +64,14 @@ public class DefaultTagFactory implements PolygraphTagFactory {
 				throw new TemplateException(String.format("required parameter '%s' not set",name),env);
 			if(params.containsKey(name)) {
 				e.getKey().setAccessible(true);
-				e.getKey().set(tag, DeepUnwrap.unwrap(params.get(name)));
+				Object unwrapped=(String)DeepUnwrap.unwrap(params.get(name));
+				if (e.getKey().getType().isEnum()) {
+					@SuppressWarnings({ "unchecked", "rawtypes" })
+					Object enumValue = Enum.valueOf((Class<? extends Enum>)(e.getKey().getType()), (String)unwrapped);
+					e.getKey().set(tag, enumValue);
+				} else {
+					e.getKey().set(tag, unwrapped);
+				}
 			}
 		}
 		for (String pname : params.keySet())
