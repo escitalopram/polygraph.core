@@ -130,7 +130,7 @@ public class PolygraphEnvironment {
 		if (ts.size()>1) {
 			for (int i=ts.size()-2;i>=0;--i) {
 				PolygraphTag tag=ts.get(i);
-				if (!tagClass.isInstance(tag)) {
+				if (tagClass.isInstance(tag)) {
 					@SuppressWarnings("unchecked")
 					A tag2 = (A)tag;
 					return tag2;
