@@ -55,6 +55,11 @@ public class PolygraphEnvironment {
 		this.env=env;
 	}
 
+	/**
+	 * Get the value of a directive's loop variable
+	 * @param index index of the loop variable
+	 * @return loop variable
+	 */
 	public Object getLoopVar(int index) {
 		try {
 			return DeepUnwrap.unwrap(loopVars[index]) ;
@@ -63,6 +68,11 @@ public class PolygraphEnvironment {
 		}
 	}
 	
+	/**
+	 * Set the value of a directive's loop variable
+	 * @param index index of the loop variable
+	 * @param value new value of the loop variable
+	 */
 	public void setLoopVar(int index, Object value) {
 		try {
 			loopVars[index]=env.getObjectWrapper().wrap(value);
@@ -71,10 +81,19 @@ public class PolygraphEnvironment {
 		}
 	}
 	
+	/**
+	 * Return the writer the current directive writes to
+	 * @return writer
+	 */
 	public Writer getWriter() {
 		return env.getOut();
 	}
 	
+	/**
+	 * Execute the body of the current directive
+	 * @param writer where to write the body
+	 * @throws IOException
+	 */
 	public void executeBody(Writer writer) throws IOException {
 		try {
 			body.render(writer);
@@ -82,6 +101,19 @@ public class PolygraphEnvironment {
 			throw new PolygraphTemplateException(e);
 		}
 	}
+
+	/**
+	 * Execute the body of the current directive using the current writer
+	 * @throws IOException
+	 */
+	public void executeBody() throws IOException {
+		executeBody(getWriter());
+	}
+
+	/**
+	 * Returns the current stack of tags
+	 * @return stack of tags
+	 */
 	public TagStack getTagStack() {
 		TagStack ts = (TagStack) env.getCustomAttribute(CoreConstants.ECA_TAGSTACK);
 		if (ts==null) {
@@ -91,21 +123,32 @@ public class PolygraphEnvironment {
 		return ts;
 	}
 
-	public void executeBody() throws IOException {
-		executeBody(getWriter());
-	}
-	
+	/**
+	 * Registers a new message part
+	 * @param name name of the new message part
+	 * @param p value of the message part
+	 * @throws PolygraphTemplateException
+	 */
 	public void registerMessagePart(String name, MessagePart p) throws PolygraphTemplateException {
 		Map<String,MessagePart> parts = getParts();
 		if (parts.containsKey(name)) throw new PolygraphTemplateException(String.format("Message part '%s' is already registered", name));
 		parts.put(name, p);
 	}
 	
+	/**
+	 * Returns a named message part
+	 * @param name name of the part to return
+	 * @return part
+	 */
 	public MessagePart getNamedPart(String name) {
 		Map<String,MessagePart> parts = getParts();
 		return parts.get(name);
 	}
 
+	/**
+	 * Return a map of message parts, create if not exists
+	 * @return map of parts
+	 */
 	private Map<String,MessagePart> getParts() {
 		@SuppressWarnings("unchecked")
 		Map<String,MessagePart> partMap = (Map<String, MessagePart>) env.getCustomAttribute(CoreConstants.ECA_PARTS); 
@@ -116,7 +159,13 @@ public class PolygraphEnvironment {
 		return partMap;
 	}
 	
+	/**
+	 * Ensure that there is a parent tag of a certain class. Only returns if there is.
+	 * @param tagClass desired class
+	 * @return parent tag of desired class
+	 */
 	public <A> A requireParentTag(Class<A> tagClass) {
+		// TODO decide if this should be converted to an annotation
 		TagStack ts = getTagStack();
 		if (ts.size()>1) {
 			PolygraphTag tag = ts.get(ts.size()-2);
@@ -129,7 +178,13 @@ public class PolygraphEnvironment {
 		throw new PolygraphTemplateException(String.format("Parent tag of type %s expected but not found.",tagClass.getName()));
 	}
 	
+	/**
+	 * Ensure that there is an ancestor tag of a certain class. Only returns if there is.
+	 * @param tagClass desired class
+	 * @return ancestor tag of desired class
+	 */
 	public <A> A requireAncestorTag(Class<A> tagClass) {
+		// TODO decide if this should be converted to an annotation
 		TagStack ts = getTagStack();
 		if (ts.size()>1) {
 			for (int i=ts.size()-2;i>=0;--i) {
@@ -144,14 +199,25 @@ public class PolygraphEnvironment {
 		throw new PolygraphTemplateException(String.format("Ancestor tag of type %s expected but not found.",tagClass.getName()));
 	}
 	
+	/**
+	 * Set a custom attribute of the environment
+	 */
 	public void setCustomAttribute(String key, Object value) {
+		// TODO fix namespace collision
 		env.setCustomAttribute(key, value);
 	}
 	
+	/**
+	 * Get a custom attribute of the environment
+	 */
 	public Object getCustomAttribute(String key) {
 		return env.getCustomAttribute(key);
 	}
 
+	/**
+	 * Determines whether the current tag has a body
+	 * @return
+	 */
 	public boolean hasBody() {
 		return body!=null;
 	}
