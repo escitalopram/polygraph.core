@@ -57,7 +57,7 @@ public class MessageGunTemplateLoader extends URLTemplateLoader {
 	}
 
 	@Override
-	protected URL getURL(String name) {
+	public URL getURL(String name) {
 		
 		Matcher m = pathValidator.matcher(name);
 		if (!m.matches())

@@ -20,13 +20,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 package com.illmeyer.polygraph.template;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.illmeyer.polygraph.core.CoreConstants;
+import com.illmeyer.polygraph.core.MessageGunTemplateLoader;
 import com.illmeyer.polygraph.core.data.MessagePart;
 
+import freemarker.cache.TemplateLoader;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateException;
@@ -150,5 +154,28 @@ public class PolygraphEnvironment {
 
 	public boolean hasBody() {
 		return body!=null;
+	}
+
+	/**
+	 * Get an InputStream for a file from the VFS
+	 * @param path path of file in the vfs
+	 * @return input stream
+	 * @throws IOException
+	 */
+	public InputStream getVfsStream(String path) throws IOException {
+		MessageGunTemplateLoader tl = (MessageGunTemplateLoader) env.getConfiguration().getTemplateLoader();
+		return tl.getURL(path).openStream();
+	}
+
+	/**
+	 * Get a Reader for a file from the VFS
+	 * @param path path of file in the vfs
+	 * @param encoding encoding of the reader
+	 * @return reader
+	 * @throws IOException
+	 */
+	public Reader getVfsReader(String path, String encoding) throws IOException {
+		TemplateLoader tl = env.getConfiguration().getTemplateLoader();
+		return tl.getReader(path, encoding);
 	}
 }
