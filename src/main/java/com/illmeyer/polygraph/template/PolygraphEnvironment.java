@@ -48,7 +48,7 @@ public class PolygraphEnvironment {
 	private TemplateDirectiveBody body;
 	private Environment env;
 	
-	public PolygraphEnvironment(TemplateModel[] loopVars,
+	PolygraphEnvironment(TemplateModel[] loopVars,
 			Environment env, TemplateDirectiveBody body) {
 		this.loopVars=loopVars;
 		this.body=body;
