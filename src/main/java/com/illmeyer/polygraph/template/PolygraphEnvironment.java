@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -230,7 +231,10 @@ public class PolygraphEnvironment {
 	 */
 	public InputStream getVfsStream(String path) throws IOException {
 		MessageGunTemplateLoader tl = (MessageGunTemplateLoader) env.getConfiguration().getTemplateLoader();
-		return tl.getURL(path).openStream();
+		URL fileUrl = tl.getURL(path);
+		if (fileUrl==null)
+			throw new PolygraphTemplateException(String.format("Requested file '%s' not found in VFS",path));
+		return fileUrl.openStream();
 	}
 
 	/**
