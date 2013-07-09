@@ -29,6 +29,11 @@ public final class CoreConstants {
 	 * Stack of Tags
 	 */
 	public static final String ECA_TAGSTACK="polygraph.core.tagStack";
+
+	/**
+	 * Set a value for this key in the environment to skip processing the current message
+	 */
+	public static final String ECA_SKIP = "polygraph.core.skip";
 	
 	/**
 	 * Prevent instantiation

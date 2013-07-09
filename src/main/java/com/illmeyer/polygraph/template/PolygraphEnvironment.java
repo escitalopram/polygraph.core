@@ -248,4 +248,12 @@ public class PolygraphEnvironment {
 		TemplateLoader tl = env.getConfiguration().getTemplateLoader();
 		return tl.getReader(path, encoding);
 	}
+
+	/**
+	 * Sets a flag that prevents sending the current message. Creating the
+	 * message is still finished, but the result will be thrown away.
+	 */
+	public void skipMessage() {
+		env.setCustomAttribute(CoreConstants.ECA_SKIP, Boolean.TRUE);
+	}
 }

@@ -81,11 +81,14 @@ public class Gun implements ComponentLifeCycle {
 			try {
 				a=addressSupplier.nextElement();
 				Message m = createMessage(a);
-				if (m==null) continue;
+				if (m==null)
+					continue;
 				dispatcher.dispatchMessage(m);
 			} catch (TemplateException e) {
+				// We don't care about skipped messages' exceptions
+				if (e.getEnvironment().getCustomAttribute(CoreConstants.ECA_SKIP)!=null)
+					continue;
 				log.error("Error processing address " + a.getAddrs().toString(), e);
-				
 			} catch (Exception e) {
 				log.error("Error processing address " + a.getAddrs().toString(), e);
 			}
@@ -97,7 +100,8 @@ public class Gun implements ComponentLifeCycle {
 			Environment e = template.createProcessingEnvironment(context, output);
 			e.process();
 			output.close();
-			// if (e.skip) return null;
+			if (e.getCustomAttribute(CoreConstants.ECA_SKIP)!=null)
+				return null;
 			String tplresult = output.toString();
 			return mt.createMessage(tplresult,e);
 	}
